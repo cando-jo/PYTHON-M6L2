@@ -16,7 +16,7 @@ gemi1 = Actor('gemi1', (150, 225))
 gemi2 = Actor('gemi2', (300, 225))
 gemi3 = Actor('gemi3', (450, 225))
 
-
+fuzeler = []
 dusmanlar = []
 gezegenler = [Actor("gezegen1", (random.randint(0, 600), -100)), Actor("gezegen2", (random.randint(0, 600), -100)), Actor("gezegen3", (random.randint(0, 600), -100))]
 meteorlar = []
@@ -48,9 +48,15 @@ def draw():
         for i in range(len(meteorlar)):
             meteorlar[i].draw()
         gemi.draw()
+        
         # Düşmanların Çizilmesi
         for i in range(len(dusmanlar)):
             dusmanlar[i].draw()
+            
+        # Fuzelerin Cizilmesi
+        for i in range(len(fuzeler)):
+            fuzeler[i].draw()
+            
     # Oyun Bitti ekranı
     elif mod == 'son':
         uzay.draw()
@@ -118,6 +124,15 @@ def update(dt):
         gezegen()
         meteorlar_hareket()
         
+        #Fuzelerin hareketi
+        for i in range(len(fuzeler)):
+            if fuzeler[i].y > -10:
+                fuzeler[i].y -= 10
+            else:
+                fuzeler.pop(i)
+                break
+                
+        
 def on_mouse_down(button, pos):
     global mod
     if mod == 'menu':
@@ -131,4 +146,11 @@ def on_mouse_down(button, pos):
             elif gemi3.collidepoint(pos):
                 gemi.image = gemi3.image
                 mod = 'oyun'
+                
+    if mod == 'oyun':
+        if button == mouse.LEFT:
+            fuze = Actor("füzeler")
+            fuzeler.append(fuze)
+            fuze.pos = gemi.pos
+            
                 
